@@ -1,12 +1,12 @@
 # Elastic 7.2 Docker Lab
 Elastic 7.2 with Zookeeper, Kafka and Monitoring cluster
 
-This repo let you deploy a little lab of a fully functionally cluster of elastic with kafka 
+This repo let you deploy a little lab of a fully functionally cluster of elastic with kafka
 I use that to fast deploy a little poc of a functionality or for a demo purpose
 
 - - -
 
-Please check the ip addressing and passwords (by default elastic/elastic)
+Please check the ip addressing and passwords (by default elastic/elastic) and regenerate your own .p12 certificates https://www.elastic.co/guide/en/elasticsearch/reference/current/certgen.html
 
 After deploy...
 ```bash
@@ -25,4 +25,3 @@ PUT _cluster/settings
 }
 
 ```
-
