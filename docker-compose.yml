@@ -208,7 +208,7 @@ services:
             elk-net:
                 ipv4_address: 172.16.100.40
                 aliases:
-                - ilebeat1
+                - filebeat1
 
   zookeeper1:
     container_name: zookeeper1
