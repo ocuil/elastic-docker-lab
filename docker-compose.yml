@@ -1,0 +1,251 @@
+version: '2' 
+services:
+
+  kibana1:
+    container_name: kibana1
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    hostname: kibana1
+    volumes:
+      - "./kibana1.yml:/usr/share/kibana/config/kibana.yml"
+    environment:
+      SERVER_NAME: kibana1
+      ELASTICSEARCH_HOSTS: http://es1:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: elastic
+      PACK_REPORTING_ENCRYPTIONKEY: 976sdftasduyfggs548ghdkfbgijnfguyehg
+    restart: always
+    ports:
+      - "172.22.200.21:15601:5601"
+    depends_on:
+      - es1
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.10 
+                aliases:
+                - kibana1
+
+  kibana2:
+    container_name: kibana2
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    hostname: kibana2
+    volumes:
+      - "./kibana2.yml:/usr/share/kibana/config/kibana.yml"
+    environment:
+      SERVER_NAME: kibana2
+      ELASTICSEARCH_HOSTS: http://esm1:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: elastic
+      XPACK_REPORTING_ENCRYPTIONKEY: 89terhnvg57tydiaskdhgef32unvsbj983
+    restart: always
+    ports:
+      - "172.22.200.21:25601:5601"
+    depends_on:
+      - esm1
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.11
+                aliases:
+                - kibana2
+
+  es1:
+    container_name: es1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    hostname: es1
+    volumes:
+      - "./esdata1:/usr/share/elasticsearch/data"
+      - "./esnode.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "./certs/:/usr/share/elasticsearch/config/certs"
+      - "./backups:/backups"
+    environment:
+      - node.name=es2
+      - discovery.seed_hosts=es2
+      - cluster.initial_master_nodes=es1,es2,es3
+      - cluster.name=DOCKER-LAB
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 4g
+    ports:
+      - "172.22.200.21:9200:9200"
+      - "127.0.0.1:19201:9200"
+      - "127.0.0.1:19301:9300"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.20
+                aliases:
+                - es1
+
+  es2:
+    container_name: es2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    hostname: es2
+    environment:
+      - node.name=es2
+      - discovery.seed_hosts=es1
+      - cluster.initial_master_nodes=es1,es2,es3
+      - cluster.name=DOCKER-LAB
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+    volumes:
+      - "./esdata2:/usr/share/elasticsearch/data"
+      - "./esnode.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "./certs/:/usr/share/elasticsearch/config/certs"
+      - "./backups:/backups"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 4g
+    ports:
+      - "127.0.0.1:19202:9200"
+      - "127.0.0.1:19302:9300"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.21
+                aliases:
+                - es2
+
+  es3:
+    container_name: es3
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    hostname: es3
+    environment:
+      - node.name=es3
+      - discovery.seed_hosts=es1
+      - cluster.initial_master_nodes=es1,es2,es3
+      - cluster.name=DOCKER-LAB
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+    volumes:
+      - "./esdata3:/usr/share/elasticsearch/data"
+      - "./esnode.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "./certs/:/usr/share/elasticsearch/config/certs"
+      - "./backups:/backups"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 4g
+    ports:
+      - "127.0.0.1:19203:9200"
+      - "127.0.0.1:19303:9300"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.22
+                aliases:
+                - es3
+
+  esm1:
+    container_name: esm1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    hostname: esm1
+    environment:
+      - node.name=esm1
+      - discovery.seed_hosts=esm1
+      - cluster.initial_master_nodes=esm1
+      - cluster.name=DOCKER-MONITORING
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
+    volumes:
+      - "./esdatam:/usr/share/elasticsearch/data"
+      - "./esnodem.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+      - "./certs/:/usr/share/elasticsearch/config/certs"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 4g
+    ports:
+      - "127.0.0.1:29200:9200"
+      - "127.0.0.1:29300:9300"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.23
+                aliases:
+                - esm1
+
+  logstash1:
+    container_name: logstash1
+    image: docker.elastic.co/logstash/logstash:7.2.0
+    hostname: logstash1
+    volumes:
+      - "./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "./logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
+      - "./logstash/lab.conf:/usr/share/logstash/config/lab.conf"
+      - "./logstash/monitoring.conf:/usr/share/logstash/config/monitoring.conf"
+      - "./logstash/capacity.conf:/usr/share/logstash/config/capacity.conf"
+      - "./logs:/var/log/logstash/"
+      - "./logstash-data:/var/lib/logstash/"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.30
+                aliases:
+                - logstash1
+
+  filebeat1:
+    container_name: filebeat1
+    image: docker.elastic.co/beats/filebeat:7.2.0
+    hostname: elk_filebeat1
+    volumes:
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    ports:
+      - "172.22.200.21:1515:1515"
+      - "172.22.200.21:1515:1515/udp"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.40
+                aliases:
+                - ilebeat1
+
+  zookeeper1:
+    container_name: zookeeper1
+    image: wurstmeister/zookeeper
+    hostname: zookeeper1
+    ports:
+      - "172.22.200.21:2181:2181"
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.50
+
+  kafka1:
+    container_name: kafka1
+    image: wurstmeister/kafka
+    hostname: kafka1
+    ports:
+      - "172.22.200.21:9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 172.22.200.21
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
+      KAFKA_LOG_RETENTION_HOURS: "24"
+      KAFKA_LOG_RETENTION_BYTES: "100000000"
+      KAFKA_CREATE_TOPICS: "capacity:1:1,monitoring:1:1,lab:1:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+            elk-net:
+                ipv4_address: 172.16.100.60
+                aliases:
+                - kafka1
+
+networks:
+    elk-net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.100.0/24
+                  gateway: 172.16.100.1
+

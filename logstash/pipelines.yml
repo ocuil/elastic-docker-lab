@@ -1,0 +1,8 @@
+- pipeline.id: monitoring
+  path.config: "/usr/share/logstash/config/monitoring.conf"
+
+- pipeline.id: lab
+  path.config: "/usr/share/logstash/config/lab.conf"
+
+- pipeline.id: capacity
+  path.config: "/usr/share/logstash/config/capacity.conf"

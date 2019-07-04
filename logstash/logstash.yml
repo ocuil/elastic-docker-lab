@@ -1,0 +1,11 @@
+path.data: /var/lib/logstash
+path.logs: /var/log/logstash
+
+node.name: "Logstash01-Indexer"
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.username: elastic
+xpack.monitoring.elasticsearch.password: "elastic"
+xpack.monitoring.elasticsearch.hosts: ["http://172.16.100.23:9200"]
+
+pipeline.workers: 8
+pipeline.batch.size: 50

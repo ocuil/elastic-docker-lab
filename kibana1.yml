@@ -1,0 +1,12 @@
+server.host: 0.0.0.0
+server.port: 5601
+server.name: kibana1
+elasticsearch.hosts: "http://172.16.100.20:9200"
+elasticsearch.username: elastic
+elasticsearch.password: "elastic"
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.hosts: "http://172.16.100.23:9200"
+xpack.monitoring.elasticsearch.username: elastic
+xpack.monitoring.elasticsearch.password: "elastic"
+
+xpack.reporting.encryptionKey: 976sdftgsdubo5das1256kfbgijnfguyehg

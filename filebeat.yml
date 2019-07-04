@@ -1,0 +1,31 @@
+filebeat.inputs:
+- type: syslog
+  protocol.udp:
+    host: "0.0.0.0:1515"
+  enabled: true
+- type: syslog
+  protocol.tcp:
+    host: "0.0.0.0:1515"
+  enabled: true
+
+  timezone: Europe/Madrid
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+setup.template.name: "filebeat"
+setup.template.pattern: "test"
+setup.template.settings:
+  index.number_of_shards: 3
+
+setup.kibana:
+
+output.kafka:
+  hosts: ["172.16.100.60:9092"]
+  topic: "lab"
+
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.username: elastic
+xpack.monitoring.elasticsearch.password: "elastic"
+xpack.monitoring.elasticsearch.hosts: ["http://172.16.100.23:9200"]
