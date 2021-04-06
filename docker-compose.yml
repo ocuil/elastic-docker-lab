@@ -67,7 +67,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     ports:
       - "192.168.153.10:9200:9200"
       - "127.0.0.1:19201:9200"
@@ -98,7 +98,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     ports:
       - "127.0.0.1:19202:9200"
       - "127.0.0.1:19302:9300"
@@ -128,7 +128,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     ports:
       - "127.0.0.1:19203:9200"
       - "127.0.0.1:19303:9300"
@@ -157,7 +157,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     ports:
       - "127.0.0.1:29200:9200"
       - "127.0.0.1:29300:9300"
@@ -183,7 +183,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     networks:
             elk-net:
                 ipv4_address: 172.16.100.30
@@ -200,7 +200,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 4g
     ports:
       - "192.168.153.10:1515:1515"
       - "192.168.153.10:1515:1515/udp"
