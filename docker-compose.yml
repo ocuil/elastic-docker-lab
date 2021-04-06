@@ -3,7 +3,7 @@ services:
 
   kibana1:
     container_name: kibana1
-    image: docker.elastic.co/kibana/kibana:7.2.0
+    image: docker.elastic.co/kibana/kibana:7.12.0
     hostname: kibana1
     volumes:
       - "./kibana1.yml:/usr/share/kibana/config/kibana.yml"
@@ -26,7 +26,7 @@ services:
 
   kibana2:
     container_name: kibana2
-    image: docker.elastic.co/kibana/kibana:7.2.0
+    image: docker.elastic.co/kibana/kibana:7.12.0
     hostname: kibana2
     volumes:
       - "./kibana2.yml:/usr/share/kibana/config/kibana.yml"
@@ -49,7 +49,7 @@ services:
 
   es1:
     container_name: es1
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
     hostname: es1
     volumes:
       - "./esdata1:/usr/share/elasticsearch/data"
@@ -80,7 +80,7 @@ services:
 
   es2:
     container_name: es2
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
     hostname: es2
     environment:
       - node.name=es2
@@ -110,7 +110,7 @@ services:
 
   es3:
     container_name: es3
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
     hostname: es3
     environment:
       - node.name=es3
@@ -140,7 +140,7 @@ services:
 
   esm1:
     container_name: esm1
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
     hostname: esm1
     environment:
       - node.name=esm1
@@ -169,7 +169,7 @@ services:
 
   logstash1:
     container_name: logstash1
-    image: docker.elastic.co/logstash/logstash:7.2.0
+    image: docker.elastic.co/logstash/logstash:7.12.0
     hostname: logstash1
     volumes:
       - "./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml"
@@ -192,7 +192,7 @@ services:
 
   filebeat1:
     container_name: filebeat1
-    image: docker.elastic.co/beats/filebeat:7.2.0
+    image: docker.elastic.co/beats/filebeat:7.12.0
     hostname: elk_filebeat1
     volumes:
       - "./filebeat.yml:/usr/share/filebeat/filebeat.yml"
