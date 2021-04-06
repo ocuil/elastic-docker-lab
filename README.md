@@ -1,5 +1,5 @@
-# Elastic 7.2 Docker Lab
-Elastic 7.2 with Zookeeper, Kafka and Monitoring cluster
+# Elastic 7.12 Docker Lab
+Elastic 7.12 with Zookeeper, Kafka and Monitoring cluster
 
 This repo let you deploy a little lab of a fully functionally cluster of elastic with kafka
 I use that to fast deploy a little poc of a functionality or for a demo purpose
